@@ -1,0 +1,408 @@
+/* ===== Design tokens ===== */
+
+:root {
+    --bg: #f9e8d6;
+    --card: #0f172a;
+    --text: #e6e8ee;
+    --muted: #a9b3c7;
+    --accent: #7c3aed;         /* фіолетовий фокус */
+    --accent-weak: #7c3aed22;
+    --danger: #ef4444;
+    --ok: #10b981;
+    --surface: #111827;
+    --input: #111827;
+    --border: #263140;
+    --radius: 14px;
+    --gap: clamp(16px, 2.5vw, 28px);
+    --shadow: 0 10px 30px rgb(2 6 23 / 35%);
+    --focus-ring: 0 0 0  3px var(--accent-weak), 0 0 0 5px var(--accent);
+    --progress-h: 8px;
+}
+
+/* dark/light auto */
+@media (prefers-color-scheme: light) {
+    :root {
+        --bg: #f7f9fc;
+        --card: #ffffff;
+        --text: #0b1220;
+        --muted: #4b5563;
+        --surface: #f3f4f6;
+        --input: #ffffff;
+        --border: #e5e7eb;
+        --shadow: 0 10px 30px rgb(2 6 23 / 8%);
+    }
+}
+
+/* ===== Reset + base ===== */
+* {
+    box-sizing: border-box;
+}
+
+html:focus-within {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    color: var(--text);
+    background: radial-gradient(1200px 600px at 10% 0%, var(--bg), transparent) var(--bg);
+}
+
+img, svg {
+    display: block;
+    max-width: 100%;
+}
+
+button {
+    font: inherit;
+    color: inherit;
+}
+
+a {
+    color: inherit;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ===== Layouts ===== */
+.container {
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    padding: clamp(20px, 4vw, 48px);
+}
+
+.card {
+    width: min (960px, 100%);
+    padding: clamp(18px, 3.5vw, 36px);
+    background: linear-gradient(180deg, var(--card), var(--surface));
+    border: 1px solid var(--border); 
+    border-radius: calc(var(--radius) + 6px);
+    box-shadow: var(--shadow);
+    display: grid;
+    gap: var(--gap);    
+}
+
+.card_header {
+    display: grid;
+    gap: 8px;
+}
+
+.card_title {
+    margin: 0;
+    font-size: clamp(20px, 2.8vw, 28px);
+    letter-spacing: .2px;
+}
+
+.card_subtitle {
+    margin: 0;
+    color: var(--muted);
+}
+
+/* Grid layout: form + sidebar */
+.card_grid {
+    display: grid;
+    gap: var(--gap);
+}
+
+@media (min-width: 860px){
+  .card_grid{
+    grid-template-columns: minmax(0,1fr) 300px; /* ліворуч форма, праворуч профіль */
+    align-items: start;
+  }
+}
+
+/* ===== Profile Completeness (circular) ===== */
+.completeness{
+    display:grid;
+    justify-items:start;
+    gap: 12px;
+    margin-block: 8px 18px;
+}
+
+/* Кільце прогресу на conic-gradient; керується --pct (0..100) */
+.completeness_ring {
+    --size: 92px;
+    --pct:65; /* задається інлайн стилем у HTML */
+    --track: var(--border, #e5e7eb);
+    --bar: #111827;        /* темний штрих як на макеті (можеш змінити) */
+    inline-size: var(--size);
+    block-size: var(--size);
+    border-radius: 50%;
+    background: conic-gradient(var(--bar) calc(var(--pct) * 1%), transparent 0);
+    display: grid;
+    place-items: center;
+    position: relative;
+}
+
+/* Внутрішня "дірка" для тонкого кільця */
+.completeness_ring::before{
+    content:"";
+    position:absolute; 
+    inset:6px;
+    border-radius:50%;
+    background: var(--card, #fff);
+    /* тінь/контур для схожості на мокап */
+    box-shadow: inset 0 0 0 1px var(--track);
+}
+
+/* Значення в центрі */
+.completeness_value{
+    position: relative;      /* поверх ::before */
+    font-weight: 500;       
+    font-size: calc(var(--size) / 3); /* адаптивний розмір цифри */
+    line-height: 1;          /* прибрати зайві відступи зверху/знизу */
+    color: #0b1220;
+
+}
+
+/* Заголовок */
+.completeness_title {
+    margin: 6px 0 6px;
+    font-size: clamp(18px, 2vw, 22px);
+}
+
+/* Сіра картка зі списком задач */
+.tasks {
+    background: color-mix(in oklab, #9ca3af 22%, transparent);
+    border-radius: 18px;
+    padding: 14px 16px;
+}
+
+.tasks_list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+}
+
+/* Пункти */
+.task {
+    color: var(--text, #111827);
+}
+
+/* Виконані – перекреслені та приглушені, як на скріні */
+.task_done {
+    text-decoration: line-through;
+    color: #9ca3af;
+}
+
+/* ===== Checklist ===== */
+.checklist {
+    background: color-mix(in oklab, #7c3aed 8%, transparent);
+    border: 1px dashed #7d4fcd66;
+    border-radius: var(--radius);
+    padding: 14px 16px;
+}
+
+.checklist_title {
+    margin: 0 0 8px;
+    font-size: 14px;
+    color: var(--muted);
+}
+
+.checklist_list {
+    margin: 0;
+    padding: 0 0 0 20px; 
+    display:grid; 
+    gap:6px; 
+}
+
+
+.checklist_item { 
+    list-style: none; 
+    position:relative; 
+    padding-left: 24px; 
+    color: var(--muted); 
+}
+
+.checklist_item::before {
+    content:"•"; 
+    position:absolute; 
+    left:0; 
+    top:0; 
+    line-height:1;
+    color:#64748b;
+}
+.checklist_item-ok { 
+    color: #9be5c7; 
+}
+
+.checklist_item-ok::before{
+  content:"✓"; 
+  color: var(--ok); 
+  font-weight: 600;
+}
+
+/* ===== Form ===== */
+.form {
+    display: grid;
+    gap: var(--gap);
+}
+.form_fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    display: grid;
+    gap: 16px;
+}
+
+.field {
+    display:grid;
+    gap: 8px;
+}
+
+.field_label {
+    font-weight: 600;
+}
+
+.field_hint {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.field_error {
+    margin: 0;
+    color: var(--danger);
+    font-size: 14px;
+}
+
+/* inputs */
+.field_input {
+    width: 100%;
+    padding: 12px 14px;
+    background: var(--input);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    outline:none;
+}
+
+.field_input::placeholder {
+    color: #7a87a0;
+}
+
+/* focus states - keyboard first */
+.field_input:focus-visible,
+.password_toggle:focus-visible,
+.btn:focus-visible,
+.skip-link:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+    border-color: transparent;
+}
+
+/* error & invalid states (на майбутнє під JS) */
+[aria-invalid="true"].field_input {
+    border-color: var(--danger);
+    box-shadow: 0 0 0 3px #ef44441f;
+}
+
+/* password with toggle */
+.password {
+    position: relative;
+}
+
+.password_input {
+    padding-right: 44px;
+}
+
+.password_toggle{
+    position: absolute;
+    right:8px;
+    top:50%;
+    transform: translateY(-50%);
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height:36px;
+    border-radius: 10px;
+    border:1px solid var(--border);
+    background: var(--input);
+    cursor: pointer;
+}
+
+.password_toggle:hover {
+    background: #111827cc; 
+}
+
+.icon {
+    width: 18px;
+    height: 18px;
+    fill: #97a2b9;
+}
+
+/* actions */
+.for_actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.btn {
+    padding: 10px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+}
+
+.btn_primary {
+    background: linear-gradient(90deg, #4f46e5, #7c3aed);
+    border: none;
+}
+
+.btn[disabled],
+.btn[aria-disabled="true"]{
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+/* skip link for keyboard users */
+.skip-link {
+    position: absolute;
+    left: -999px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.skip-link:focus {
+    left: 16px;
+    top: 16px; width: auto;
+    height: auto;
+    padding: 8px 12px;
+    background: #111827;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+}
+
+/* motion-safe */
+@media (prefers-reduced-motion: reduce){
+  * { 
+    animation: none !important; 
+    transition: none !important; 
+    }
+}
+
+.checklist { 
+    display: none; 
+}
+
+.password:focus-within + .checklist { display: block; }
+

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Accessible Form UI</title>
+        <meta name="description" content="A static, accessible sign‑up form built with HTML and CSS only.">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <a class="skip-link" href="#form-title">Skip to form</a>   
+
+        <main class="container" role="main">
+            <section class="card" aria-labelledby="form-title">
+                <header class="card_header">
+                    <h1 id="form-title" class="card_title">Create account</h1>
+                    <p class="card_subtitle">All fields are required.</p>
+                </header>
+
+                <div class="card_grid">
+                    <!-- LEFT: FORM -->
+                    <form class="form" novalidate aria-describedby="a11y-note">
+                        <p id="a11y-note" class="sr-only">
+                            Labels are linked to fields. Use the Tab key to move the key between elements
+                        </p>
+
+                        <fieldset class="form_fieldset">
+                            <legend class="sr-only">Personal information</legend>
+                            <div class="field">
+                                <label class="field_label" for="fullName">Full name</label>
+                                <input
+                                    class="field_input"
+                                    id="fullName"
+                                    type="text"
+                                    autocomplete="name"
+                                    placeholder="e.g. Jane Doe"
+                                    required
+                                    aria-required="true"
+                                    aria-describedby="fullName-hint"    
+                                />
+                                <p id="fullName-hint" class="field_hint">
+                                    As in your official documents.
+                                </p>
+                                <p class="field_error" id="fullName-error" aria-live="polite" hidden>
+                                    Please enter your name.
+                                </p>
+                            </div>
+
+                            <div class="field">
+                                <label class="field_label" for="email">Email address</label>
+                                <input 
+                                    class="field_input"
+                                    id="email"
+                                    name="email"
+                                    type="email"
+                                    autocomplete="email"
+                                    placeholder="name@example.com"
+                                    required
+                                    aria-required="true"
+                                    aria-describedby="email-hint"
+                                />
+                                <p id="email-hint" class="field_hint">We'll send you a confirmation email.</p>
+                                <p class="field_error" id="email-error" aria-live="polite" hidden>
+                                    Please enter a valid email.
+                                </p>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="form_fieldset">
+                            <legend class="sr-only">Password</legend>
+
+                            <div class="field">
+                                <label class="field_label" for="password">Password</label>
+                                <div class="password">
+                                    <input
+                                        class="field_input password_input"
+                                        id="password"
+                                        name="password"
+                                        type="password"   
+                                        autocomplete="new-password"
+                                        placeholder="Create a password"
+                                        required
+                                        aria-required="true"
+                                        aria-describedby="password-hint"
+                                        aria-invalid="false" 
+                                    />
+                                    <!-- Show/hide password button - static UI -->
+                                    <button 
+                                        class="password_toggle"
+                                        type="button"
+                                        aria-pressed="false"
+                                        aria-controls="password"
+                                        aria-label="Password is hidden. Press to show."
+                                        title="Show/hide password">
+                                    <!-- eye icon SVG -->
+                                        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                        <path d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7zm0 12a5 5 0 110-10 5 5 0 010 10z"/>
+                                        <circle cx="12" cy="12" r="2.5"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <!-- Password requirements checklist (static UI) -->
+                                <aside class="checklist" aria-labelledby="requirements-title">
+                                    <h2 id="requirements-title" class="checklist_title">Password requirements</h2>
+                                    <ul class="checklist_list">
+                                        <li class="checklist_item checklist_item_ok">At least 8 characters</li>
+                                        <li class="checklist_item checklist_item_ok">Contains a number</li>
+                                        <li class="checklist_item">Contains an uppercase letter</li>
+                                        <li class="checklist_item">Contains a special character</li>
+                                    </ul>
+                                </aside>
+                                <p id="password-hint" class="field_hint">Min. 8 characters, number, uppercase, special symbol.</p>
+                                <p class="field_error" id="password-error" aria-live="polite" hidden>
+                                    Password does not meet requirements.
+                                </p>
+                            </div>
+
+                            
+                            
+                            <!-- Confirm password field -->
+                            <div class="field">
+                                <label class="field_label" for="confirmPassword">Confirm password</label>
+                                <input
+                                    class="field_input"
+                                    id="confirmPassword"
+                                    name="confirmPassword"
+                                    type="password"
+                                    autocomplete="new-password"
+                                    placeholder="Repeat password"
+                                    required
+                                    aria-required="true"
+                                    aria-describedby="confirm-hint"
+                                />
+                                <p id="confirm-hint" class="field_hint">Must match the "Password" field.</p>
+                                <p class="field_error" id="confirm-error" aria-live="polite" hidden>
+                                    Password do not match.
+                                </p>
+                            </div>
+                        </fieldset>
+                        <div class="form_actions">
+                            <button class="btn btn_primary" type="submit" aria-disabled="true" disabled>
+                                Update Profile
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- RIGHT: PROFILE COMPLETENESS -->
+                    <!-- Profile Completeness (static UI) -->
+                    <section class="completeness" aria-labelledby="completeness_title">
+                        <div class="completeness_ring" role="img" 
+                        aria-label="Profile completeness 65 percent"
+                        style="--pct:65">
+                            <span class="completeness_value">65%</span>
+                        </div>
+
+                        <h2 id="completeness_title" class="completeness_title">
+                            Profile Completeness
+                        </h2>
+                        <div class="tasks" aria-labelledby="completeness_title">
+                            <ul class="tasks_list">
+                                <li class="task task_done">Create Account</li>
+                                <li class="task task_done">Update Readmap Progress</li>
+                                <li class="task task_done">Setup Public Profile</li>
+                                <li class="task">Complete your first project</li>
+                                <li class="task">Invite your Friends</li>
+                            </ul>
+                        </div>
+                    </section>
+                </div>
+            </section>
+        </main>
+            
+    </body>
+</html>
